@@ -17,18 +17,6 @@ import System.IO (IOMode (ReadMode, WriteMode))
 import System.IO.Streams (makeOutputStream)
 import qualified System.IO.Streams as Streams
 
--- | Act on a large object given by id, opening and closing the file descriptor appropriately.
-withLargeObject
-  :: Connection
-  -> Oid
-  -> IOMode
-  -> (LoFd -> IO a)
-  -> IO a
-withLargeObject conn oid mode f =
-  bracket (Sql.loOpen conn oid mode)
-          (\lofd -> Sql.loClose conn lofd)
-          f
-
 -- | Given a strict ByteString, create a postgres large object and fill it with those contents.
 newLargeObjectBS
   :: Connection
@@ -65,6 +53,18 @@ newLargeObjectStream conn s = do
         "newLargeObjectStream: loWrite reported writing " <> show n <> " bytes, expected " <> show l <> "."
     Sql.loTell conn lofd
   return (oid, t)
+
+-- | Act on a large object given by id, opening and closing the file descriptor appropriately.
+withLargeObject
+  :: Connection
+  -> Oid
+  -> IOMode
+  -> (LoFd -> IO a)
+  -> IO a
+withLargeObject conn oid mode f =
+  bracket (Sql.loOpen conn oid mode)
+          (\lofd -> Sql.loClose conn lofd)
+          f
 
 -- | Stream the contents of a database large object to the given output stream. Useful with Snap's 'addToOutput'.
 streamLargeObject
