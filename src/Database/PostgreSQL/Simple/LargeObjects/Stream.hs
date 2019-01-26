@@ -1,5 +1,5 @@
 {-# LANGUAGE LambdaCase #-}
-module Database.PostgreSQL.LargeObjects.Stream where
+module Database.PostgreSQL.Simple.LargeObjects.Stream where
 
 import Control.Exception.Lifted (AssertionFailed (..), bracket, throwIO)
 import Control.Monad.Loops (whileJust_)
