@@ -15,7 +15,7 @@ build-type:          Simple
 extra-source-files:  README.md
 
 tested-with:
-  GHC  ==8.0.2 || ==8.2.2 || ==8.4.4 || ==8.6.5
+  GHC  ==8.4.4 || ==8.6.5
 
 library
   exposed-modules:     Database.PostgreSQL.Simple.LargeObjects.Stream
